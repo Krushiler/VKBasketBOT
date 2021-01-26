@@ -7,10 +7,10 @@ from directKeys import moveMouseTo, mouseUp, mousePress
 import keyboard
 
 ballImg = cv2.imread('ball.png', cv2.IMREAD_GRAYSCALE)
-ballImg = cv2.Canny(ballImg, threshold1=150, threshold2=200)
+ballImg = cv2.Canny(ballImg, threshold1=50, threshold2=50)
 
 basketImg = cv2.imread('basket.png', cv2.IMREAD_GRAYSCALE)
-basketImg = cv2.Canny(basketImg, threshold1=150, threshold2=200)
+basketImg = cv2.Canny(basketImg, threshold1=50, threshold2=50)
 
 gameCoords = [847, 264, 1265, 1002]
 
@@ -18,7 +18,7 @@ top = 400
 
 def process_img(original_image):
     processed_img = cv2.cvtColor(original_image, cv2.COLOR_BGR2GRAY)
-    processed_img = cv2.Canny(processed_img, threshold1=150, threshold2=200)
+    processed_img = cv2.Canny(processed_img, threshold1=50, threshold2=50)
     vertices = np.array([[0,0],[0,800],[850,800],[850,0]
                          ], np.int32)
     processed_img = roi(processed_img, [vertices])
@@ -71,13 +71,13 @@ while True:
             cv2.rectangle(new_screen, (MPx, MPy), (MPx + tcols, MPy + trows), (255, 0, 0), 2)
             if MPy > 0:
                 basketX = gameCoords[0] + MPx + tcols//2
-                basketY = gameCoords[1] + MPy + tcols//2
+                basketY = gameCoords[1] + MPy + trows//2
 
                 moveMouseTo(ballX, ballY)
                 time.sleep(0.5)
                 mousePress()
                 time.sleep(0.5)
-                moveMouseTo((basketX + ballX)//2 + (basketX - ballX)//15, top)
+                moveMouseTo((basketX + ballX)//2, top)
                 time.sleep(0.5)
                 mouseUp()
                 time.sleep(0.5)
