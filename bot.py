@@ -14,7 +14,7 @@ basketImg = cv2.Canny(basketImg, threshold1=50, threshold2=50)
 
 gameCoords = [847, 264, 1265, 1002]
 
-top = 650
+top = 675
 
 def process_img(original_image):
     processed_img = cv2.cvtColor(original_image, cv2.COLOR_BGR2RGB)
@@ -76,13 +76,13 @@ while True:
             basketY = gameCoords[1] + MPy + trows//2
 
             moveMouseTo(ballX, ballY)
-            time.sleep(0.5)
+            time.sleep(0.1)
             mousePress()
-            time.sleep(0.5)
-            moveMouseTo((basketX + ballX)//2, int(top - basketY//2.5))
-            time.sleep(0.5)
+            time.sleep(0.1)
+            moveMouseTo((basketX + ballX)//2, int(top - basketY//2.6))
+            time.sleep(0.1)
             mouseUp()
-            time.sleep(0.5)
+            time.sleep(0.1)
             ballY = 0
 
 
