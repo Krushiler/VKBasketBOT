@@ -3,19 +3,22 @@ from PIL import ImageGrab
 import cv2
 import time
 import pyautogui
-from directKeys import moveMouseTo, mouseUp, mousePress, queryMousePosition
+from directKeys import moveMouseTo, mouseUp, mousePress, queryMousePosition, click
 import keyboard
-
+1.2021
 ballImg = cv2.imread('ball.png', cv2.IMREAD_GRAYSCALE)
 ballImg = cv2.Canny(ballImg, threshold1=50, threshold2=50)
 
 basketImg = cv2.imread('basket.png', cv2.IMREAD_GRAYSCALE)
 basketImg = cv2.Canny(basketImg, threshold1=50, threshold2=50)
 
+restartImg = cv2.imread('restart.png', cv2.IMREAD_GRAYSCALE)
+restartImg = cv2.Canny(restartImg, threshold1=50, threshold2=50)
+
 gameCoords = [847, 264, 1265, 1002]
 
 top = 675
-
+top = (gameCoords[3] + gameCoords[1])//2
 def process_img(original_image):
     processed_img = cv2.cvtColor(original_image, cv2.COLOR_BGR2RGB)
     processed_img = cv2.Canny(processed_img, threshold1=50, threshold2=50)
@@ -72,6 +75,7 @@ while True:
 
         cv2.rectangle(new_screen, (MPx, MPy), (MPx + tcols, MPy + trows), (255, 0, 0), 2)
         if MPy > 0 and ballY > 0:
+            basketYField = MPy + trows//2
             basketX = gameCoords[0] + MPx + tcols//2
             basketY = gameCoords[1] + MPy + trows//2
 
@@ -79,14 +83,28 @@ while True:
             time.sleep(0.1)
             mousePress()
             time.sleep(0.1)
-            moveMouseTo((basketX + ballX)//2, int(top - basketY//2.6))
+            moveMouseTo((basketX + ballX)//2, int(top - basketYField//1.85))
             time.sleep(0.1)
             mouseUp()
             time.sleep(0.1)
             ballY = 0
 
+        result = cv2.matchTemplate(restartImg, new_screen, method)
+
+        mn, _, mnLoc, _ = cv2.minMaxLoc(result)
+
+        MPx, MPy = mnLoc
+
+        trows, tcols = ballImg.shape[:2]
+
+        if MPy > 0:
+            resX = gameCoords[0] + MPx + tcols // 2
+            resY = gameCoords[1] + MPy + trows // 2
+            click(resX, resY)
 
     cv2.imshow('window', new_screen)
+
+
 
     if cv2.waitKey(25) & 0xFF == ord('q'):
         cv2.destroyAllWindows()
