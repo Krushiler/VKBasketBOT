@@ -5,7 +5,7 @@ import time
 import pyautogui
 from directKeys import moveMouseTo, mouseUp, mousePress, queryMousePosition, click
 import keyboard
-1.2021
+
 ballImg = cv2.imread('ball.png', cv2.IMREAD_GRAYSCALE)
 ballImg = cv2.Canny(ballImg, threshold1=50, threshold2=50)
 
